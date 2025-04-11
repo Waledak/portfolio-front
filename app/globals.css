@@ -1,4 +1,39 @@
 @import "tailwindcss";
+@tailwind utilities;
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "monportfolio";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Palette moderne, tech, violet + néon */
+  --color-base-100: oklch(98% 0.01 260); /* fond clair */
+  --color-base-200: oklch(94% 0.01 260);
+  --color-base-300: oklch(90% 0.01 260);
+  --color-base-content: oklch(15% 0.02 260); /* texte */
+
+  --color-primary: oklch(55% 0.27 285);         /* violet tech */
+  --color-primary-content: oklch(98% 0.01 285);
+
+  --color-secondary: oklch(65% 0.24 215);       /* bleu néon */
+  --color-secondary-content: oklch(98% 0.01 215);
+
+  --color-accent: oklch(65% 0.23 150);          /* vert menthe */
+  --color-accent-content: oklch(98% 0.01 150);
+
+  --color-neutral: oklch(40% 0.03 260);         /* gris foncé / contraste */
+  --color-neutral-content: oklch(98% 0.01 260);
+
+  --color-info: oklch(70% 0.2 240);
+  --color-success: oklch(65% 0.2 145);
+  --color-warning: oklch(80% 0.22 90);
+  --color-error: oklch(65% 0.25 25);
+
+  --radius-box: 0.75rem;
+  --depth: 1;
+}
 
 :root {
   --background: #ffffff;
@@ -20,7 +55,6 @@
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
