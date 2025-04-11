@@ -9,8 +9,10 @@ import ContactSection from "@/components/home/ContactSection";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {notFound} from "next/navigation";
 
-export default async function HomePage({ params }: { params: { lang: string } }) {
-    const lang = params.lang
+export default async function HomePage({params}: {
+    params: Promise<{ lang: string }>
+}) {
+    const { lang } = await params
 
     const homePage = await getHomeData(lang)
     const {

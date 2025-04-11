@@ -1,7 +1,8 @@
 'use client'
 
 import * as LucideIcons from 'lucide-react'
-import {Contact} from "@/types/strapi.type";
+import { Contact } from "@/types/strapi.type";
+import React from 'react';
 
 type ContactLinksProps = {
     title: string
@@ -17,7 +18,8 @@ export default function ContactSection({ title, description, links }: ContactLin
 
             <div className="flex flex-wrap mt-5 gap-3">
                 {links.map((link) => {
-                    const Icon = LucideIcons[link.logo as keyof typeof LucideIcons] ?? LucideIcons.Link
+                    // On force la conversion en React.FC avec les props SVG
+                    const Icon = (LucideIcons[link.logo as keyof typeof LucideIcons] as React.FC<React.SVGProps<SVGSVGElement>>) ?? LucideIcons.Link;
                     return (
                         <a
                             key={link.name}
@@ -33,5 +35,5 @@ export default function ContactSection({ title, description, links }: ContactLin
                 })}
             </div>
         </footer>
-    )
+    );
 }

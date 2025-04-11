@@ -1,5 +1,6 @@
-import { redirect } from 'next/navigation'
+// app/[lang]/[...missing]/page.tsx
+import { notFound } from 'next/navigation'
 
-export default function CatchAllWithinLang({ params }: { params: { lang: string } }) {
-    redirect(`/${params.lang}`)
+export default function CatchAllInvalidRoutes() {
+    notFound()
 }
