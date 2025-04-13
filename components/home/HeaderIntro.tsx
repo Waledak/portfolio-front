@@ -39,7 +39,7 @@ export default function HeaderIntro({
                 className="flex flex-col sm:col-span-2 rounded-3xl bg-white/30 backdrop-blur-sm justify-center px-6 py-6 text-black w-full">
                 <h1 className="text-4xl md:text-5xl font-semibold leading-tight">{fullname}</h1>
                 <p className="text-xl text-primary mt-1">{baseline}</p>
-                <p className="text-gray-700 mt-6 text-lg">{description}</p>
+                <p className="text-neutral mt-6 text-lg">{description}</p>
 
                 <nav className="flex justify-end gap-4 mt-3">
                     <Link
