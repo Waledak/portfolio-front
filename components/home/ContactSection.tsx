@@ -28,8 +28,8 @@ export default function ContactSection({ title, description, links }: ContactLin
                             rel="noopener noreferrer"
                             className="flex items-center px-2 py-1 gap-2 border-primary border-[1px] rounded-full hover:text-primary transition"
                         >
-                            <Icon className="w-5 h-5" />
-                            <span className="capitalize">{link.name}</span>
+                            <Icon className="w-5 h-5 text-black" />
+                            <span className="capitalize text-black">{link.name}</span>
                         </a>
                     )
                 })}
