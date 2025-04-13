@@ -13,8 +13,8 @@ type ContactLinksProps = {
 export default function ContactSection({ title, description, links }: ContactLinksProps) {
     return (
         <footer className="col-span-3 mt-9 gap-3 flex flex-col items-center justify-center border-primary border-2 bg-white/30 backdrop-blur-sm rounded-3xl p-6">
-            <h2 className="text-2xl">{title}</h2>
-            <p>{description}</p>
+            <h2 className="text-2xl text-black">{title}</h2>
+            <p className="text-black">{description}</p>
 
             <div className="flex flex-wrap mt-5 gap-3">
                 {links.map((link) => {
