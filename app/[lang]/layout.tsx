@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import ParticleBackground from "@/components/particle-background";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,15 +21,16 @@ export const metadata: Metadata = {
   description,
 };
 
+type Props = {
+    children: React.ReactNode;
+    params: { lang: string };
+};
 
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children, params }: Props) {
+    const { lang } = await params;
   return (
-    <html lang="fr" data-theme="monportfolio">
+    <html lang={lang} data-theme="monportfolio">
         <head>
             <meta property="og:title" content="Nouveau Nom du Site" />
             <meta property="og:description" content="Une description optimisée pour le partage sur réseaux sociaux." />
@@ -41,8 +42,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-transparent`}
       >
+      <Navbar lang={lang} />
       <ParticleBackground />
-      {children}
+      <main>{children}</main>
       </body>
     </html>
   );

@@ -1,12 +1,15 @@
 "use client"
 
 import { useRef, useMemo } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 
 export default function ParticleBackground() {
+    const bg =  "bg-neutral-100"
     return (
-        <div className="fixed inset-0 -z-10 bg-neutral-100">
+        <div className={
+            `fixed inset-0 -z-10 transition-all ${bg}`
+        }>
             <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
                 <ParticleTetrahedrons />
                 <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
