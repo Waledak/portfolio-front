@@ -72,3 +72,74 @@ export interface HomePage {
     contactDescription: string
     contactLink: Contact[]
 }
+
+// Define the structure for each image format detail
+export interface FormatDetail {
+    ext: string;
+    url: string;
+    hash: string;
+    mime: string;
+    name: string;
+    path: string | null;
+    size: number;
+    width: number;
+    height: number;
+    sizeInBytes: number;
+}
+
+// Define the formats object
+export interface Formats {
+    large?: FormatDetail;
+    small?: FormatDetail;
+    medium?: FormatDetail;
+    thumbnail?: FormatDetail;
+}
+
+// Define the structure for the image object
+export interface ImageAttributes {
+    id: number;
+    documentId: string;
+    name: string;
+    alternativeText: string | null;
+    caption: string | null;
+    width: number;
+    height: number;
+    formats: Formats;
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    previewUrl: string | null;
+    provider: string;
+    provider_metadata: any | null;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+}
+
+// Define the structure for each gallery item in the data array
+export interface GalleryItem {
+    id: number;
+    documentId: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    image: ImageAttributes;
+}
+
+// Define the structure for pagination metadata
+export interface Pagination {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+}
+
+// Define the overall response structure from Strapi
+export interface GalleryResponse {
+    data: GalleryItem[];
+    meta: {
+        pagination: Pagination;
+    }
+}

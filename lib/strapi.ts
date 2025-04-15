@@ -1,4 +1,4 @@
-import {HomePage} from "@/types/strapi.type";
+import {GalleryResponse, HomePage} from "@/types/strapi.type";
 
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337'
 
@@ -19,4 +19,19 @@ export async function getHomeData(locale = 'en'): Promise<HomePage> {
         console.error('Erreur réseau ou fetch :', err)
         throw err
     }
+}
+
+
+export async function fetchGallery(page = 1, pageSize = 12): Promise<GalleryResponse> {
+    const API_URL = process.env.STRAPI_URL || 'http://localhost:1337';
+
+    const res = await fetch(
+        `${API_URL}/api/photos?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+    );
+
+    if (!res.ok) {
+        throw new Error(`Failed to fetch gallery data: ${res.status}`);
+    }
+
+    return await res.json();
 }
