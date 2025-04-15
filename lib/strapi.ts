@@ -23,10 +23,8 @@ export async function getHomeData(locale = 'en'): Promise<HomePage> {
 
 
 export async function fetchGallery(page = 1, pageSize = 12): Promise<GalleryResponse> {
-    const API_URL = process.env.STRAPI_URL || 'http://localhost:1337';
-
     const res = await fetch(
-        `${API_URL}/api/photos?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+        `${STRAPI_URL}/api/photos?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
     );
 
     if (!res.ok) {
