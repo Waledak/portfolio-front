@@ -47,7 +47,7 @@ function Lightbox({
                 &lt;
             </button>
             <img
-                src={currentImage.image.formats.large?.url || currentImage.image.url}
+                src={currentImage.image.url}
                 alt={currentImage.image.name || 'Gallery Image'}
                 className={`max-h-full max-w-full cursor-pointer transition-transform duration-500 ease-in-out [view-transition-name:gallery-photo-${initialIndex}]`}
             />
