@@ -109,7 +109,7 @@ export default function Gallery() {
     };
 
     return (
-        <div className="p-10 w-11/12 sm:w-10/12 md:w-4/6 xl:w-3/6 mx-auto">
+        <div className="py-10 w-11/12 sm:w-10/12 md:w-4/6 xl:w-3/6 mx-auto">
             <InfiniteScroll
                 dataLength={images.length}
                 next={() => loadGallery(page + 1)}

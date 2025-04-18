@@ -44,7 +44,7 @@ export default function HeaderIntro({
                 <nav className="flex justify-end gap-4 mt-3">
                     <Link
                         href={`/${lang}/projects`}
-                        className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-primary/80 transition"
+                        className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-secondary transition"
                     >
                         Projects
                     </Link>

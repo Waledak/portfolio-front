@@ -112,7 +112,7 @@ export interface ImageAttributes {
     url: string;
     previewUrl: string | null;
     provider: string;
-    provider_metadata: any | null;
+    provider_metadata: never | null;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
@@ -128,6 +128,20 @@ export interface GalleryItem {
     image: ImageAttributes;
 }
 
+export interface ProjectItem {
+    id: number;
+    documentId: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    image: ImageAttributes;
+    techno: Skill[]
+    name: string;
+    description: string;
+    type: string;
+
+}
+
 // Define the structure for pagination metadata
 export interface Pagination {
     page: number;
@@ -139,6 +153,13 @@ export interface Pagination {
 // Define the overall response structure from Strapi
 export interface GalleryResponse {
     data: GalleryItem[];
+    meta: {
+        pagination: Pagination;
+    }
+}
+
+export interface ProjectResponse {
+    data: ProjectItem[];
     meta: {
         pagination: Pagination;
     }
