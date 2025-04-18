@@ -1,22 +1,24 @@
-import {ReactElement} from "react";
+import { fetchProjects } from '@/lib/strapi';
+import ProjectCard from "@/components/project/ProjectCard";
 
-export default function projectsPage(): ReactElement {
+export default async function projectsPage({
+       params,
+    }: {
+        params: Promise<{ lang: string }>;
+    }) {
+    const { lang } = await params;
+    const projects = await fetchProjects(lang);
+
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '80vh',
-                textAlign: 'center',
-                padding: '1rem',
-            }}
-        >
-            <h1>Work In Progress</h1>
-            <p>
-                Cette page est en cours de développement. Revenez bientôt pour découvrir nos nouveautés !
-            </p>
+        <div className="py-10 mt-5 w-11/12 sm:w-10/12 md:w-4/6 xl:w-3/6 mx-auto bg-base-100 rounded-3xl">
+            <div className="px-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {projects.data.map((project) => (
+                    <ProjectCard
+                        key={project.id}
+                        project={project}    // nombre de lignes avant "Voir plus"
+                    />
+                ))}
+            </div>
         </div>
     );
 }

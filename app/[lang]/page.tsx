@@ -34,7 +34,7 @@ export default async function HomePage({params}: {
         notFound() // ⬅️ va afficher ton not-found.tsx
     }
     return (
-            <div className="p-10 w-11/12 sm:w-10/12 md:4/6 xl:w-3/6 mx-auto">
+            <div className="py-10 w-11/12 sm:w-10/12 md:4/6 xl:w-3/6 mx-auto">
                 <HeaderIntro
                     lang={lang}
                     imgUrl={imgUrl}

@@ -19,6 +19,11 @@ const description = "Découvrez mon travail de développeur web mais également 
 export const metadata: Metadata = {
   title ,
   description,
+    icons: {
+        icon: "/favicon/favicon.ico",
+        apple: "/favicon/favicon.ico",
+        shortcut: "/favicon/favicon.ico",
+    }
 };
 
 
@@ -31,8 +36,8 @@ export default function RootLayout({
   return (
     <html lang="fr" data-theme="monportfolio">
         <head>
-            <meta property="og:title" content="Nouveau Nom du Site" />
-            <meta property="og:description" content="Une description optimisée pour le partage sur réseaux sociaux." />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
             <meta property="og:url" content="https://tanguycirillo.fr" />
             <meta property="og:image" content="https://tanguycirillo.fr/" />
             <meta name="twitter:title" content={title} />

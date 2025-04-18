@@ -1,4 +1,4 @@
-import {GalleryResponse, HomePage} from "@/types/strapi.type";
+import {GalleryResponse, HomePage, ProjectResponse} from "@/types/strapi.type";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
@@ -29,6 +29,18 @@ export async function fetchGallery(page = 1, pageSize = 12): Promise<GalleryResp
 
     if (!res.ok) {
         throw new Error(`Failed to fetch gallery data: ${res.status}`);
+    }
+
+    return await res.json();
+}
+
+export async function fetchProjects(locale = 'en'): Promise<ProjectResponse> {
+    const res = await fetch(
+        `${STRAPI_URL}/api/projects?populate[0]=image&populate[1]=techno.tags&locale=${locale}&sort=startDate:Desc`,
+    );
+
+    if (!res.ok) {
+        throw new Error(`Failed to fetch project data: ${res.status}`);
     }
 
     return await res.json();
