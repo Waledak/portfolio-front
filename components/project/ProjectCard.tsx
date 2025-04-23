@@ -22,7 +22,7 @@ export default function ProjectCard({
                 />
             </figure>
             <div className="card-body">
-                <h2 className="card-title flex-wrap">
+                <h2 className="card-title text-black flex-wrap">
                     {project.name}
                     <div className="badge badge-sm badge-secondary ml-2">
                         {project.type}

@@ -4,7 +4,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export async function getHomeData(locale = 'en'): Promise<HomePage> {
     try {
-        const res = await fetch(`${STRAPI_URL}/api/home-page?populate[0]=profilePicture&populate[1]=skills.tags&populate[2]=photosPreview&populate[3]=contactLink&locale=${locale}`, {
+        const res = await fetch(`${STRAPI_URL}/api/home-page?populate[0]=profilePicture&populate[1]=skills.tags&populate[2]=photosPreview&populate[3]=contactLink&populate[4]=cv&locale=${locale}`, {
             next: { revalidate: 60 }
         })
 
@@ -24,7 +24,7 @@ export async function getHomeData(locale = 'en'): Promise<HomePage> {
 
 export async function fetchGallery(page = 1, pageSize = 12): Promise<GalleryResponse> {
     const res = await fetch(
-        `${STRAPI_URL}/api/photos?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+        `${STRAPI_URL}/api/photos?populate=*&sort=rank&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
     );
 
     if (!res.ok) {
