@@ -14,7 +14,6 @@ export async function getHomeData(locale = 'en'): Promise<HomePage> {
         }
 
         const data = await res.json()
-        console.log(data)
         return data.data
     } catch (err) {
         console.error('Erreur réseau ou fetch :', err)
