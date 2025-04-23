@@ -25,6 +25,7 @@ export default async function HomePage({params}: {
         contactSectionName,
         contactDescription,
         contactLink,
+        cv
     } = homePage;
 
     const imgUrl = profilePicture.formats.large?.url || profilePicture.url;
@@ -42,6 +43,7 @@ export default async function HomePage({params}: {
                     fullname={fullname}
                     baseline={baseline}
                     description={description}
+                    cvUrl={cv.url}
                 />
 
                 <SkillsGrid title={skillSectionName} skills={skills} />

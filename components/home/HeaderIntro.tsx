@@ -10,6 +10,7 @@ type HeaderIntroProps = {
     fullname: string
     baseline: string
     description: string
+    cvUrl: string
 }
 
 export default function HeaderIntro({
@@ -19,6 +20,7 @@ export default function HeaderIntro({
         fullname,
         baseline,
         description,
+        cvUrl
     }: HeaderIntroProps) {
     return (
         <header className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -41,19 +43,25 @@ export default function HeaderIntro({
                 <p className="text-xl text-primary mt-1">{baseline}</p>
                 <p className="text-neutral mt-6 text-lg">{description}</p>
 
-                <nav className="flex justify-end gap-4 mt-3">
-                    <Link
-                        href={`/${lang}/projects`}
-                        className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-secondary transition"
-                    >
-                        Projects
+                <nav className="flex justify-between flex-wrap items-center gap-4 mt-3">
+                    <Link className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-secondary transition" target="_blank" href={cvUrl}>
+                        CV
                     </Link>
-                    <Link
-                        href={`/${lang}/gallery`}
-                        className="px-5 py-2 rounded-full border border-primary text-black font-medium text-center hover:bg-primary hover:text-white transition"
-                    >
-                        Gallery
-                    </Link>
+                    <div className="flex gap-4 items-center flex-wrap">
+                        <Link
+                            href={`/${lang}/projects`}
+                            className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-secondary transition"
+                        >
+                            Projects
+                        </Link>
+                        <Link
+                            href={`/${lang}/gallery`}
+                            className="px-5 py-2 rounded-full border border-primary text-black font-medium text-center hover:bg-primary hover:text-white transition"
+                        >
+                            Gallery
+                        </Link>
+                    </div>
+
                 </nav>
             </section>
         </header>

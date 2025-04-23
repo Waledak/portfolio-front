@@ -115,7 +115,6 @@ export default function Gallery() {
                 next={() => loadGallery(page + 1)}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
-                endMessage={<p className="text-center">No more images</p>}
             >
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
