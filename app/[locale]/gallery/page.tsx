@@ -67,7 +67,7 @@ export default function Gallery() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-    const PAGE_SIZE = 8;
+    const PAGE_SIZE = 3;
     const hasFetchedRef = useRef(false);
 
     const loadGallery = async (pageNumber: number) => {
@@ -109,12 +109,13 @@ export default function Gallery() {
     };
 
     return (
-        <div className="py-10 w-11/12 sm:w-10/12 md:w-4/6 xl:w-3/6 mx-auto">
+        <div className="py-10 w-11/12 sm:w-10/12 md:w-4/6 xl:w-3/6 mx-auto" >
             <InfiniteScroll
                 dataLength={images.length}
                 next={() => loadGallery(page + 1)}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableMainContentContainer"
             >
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
