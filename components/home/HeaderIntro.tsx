@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import {useTranslations} from "next-intl";
 
 type HeaderIntroProps = {
-    lang: string
+    locale: string
     imgUrl: string
     alt: string
     fullname: string
@@ -14,7 +15,7 @@ type HeaderIntroProps = {
 }
 
 export default function HeaderIntro({
-        lang,
+        locale,
         imgUrl,
         alt,
         fullname,
@@ -22,6 +23,8 @@ export default function HeaderIntro({
         description,
         cvUrl
     }: HeaderIntroProps) {
+    const t = useTranslations("HeaderSection")
+
     return (
         <header className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Image Side */}
@@ -49,16 +52,18 @@ export default function HeaderIntro({
                     </Link>
                     <div className="flex gap-4 items-center flex-wrap">
                         <Link
-                            href={`/${lang}/projects`}
+                            href={`/${locale}/projects`}
+                            prefetch={true}
                             className="px-5 py-2 rounded-full bg-primary text-white font-medium text-center hover:bg-secondary transition"
                         >
-                            Projects
+                            {t("projects")}
                         </Link>
                         <Link
-                            href={`/${lang}/gallery`}
+                            href={`/${locale}/gallery`}
+                            prefetch={true}
                             className="px-5 py-2 rounded-full border border-primary text-black font-medium text-center hover:bg-primary hover:text-white transition"
                         >
-                            Gallery
+                            {t("gallery")}
                         </Link>
                     </div>
 

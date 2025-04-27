@@ -6,10 +6,10 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import * as LucideIcons from "lucide-react";
 
 type NavbarProps = {
-    lang: string;
+    locale: string;
 }
 
-export default function Navbar({ lang }: NavbarProps) {
+export default function Navbar({ locale }: NavbarProps) {
     const pathname = usePathname();
 
     // Icons from Lucide Icons
@@ -25,9 +25,9 @@ export default function Navbar({ lang }: NavbarProps) {
 
     // Define the links
     const links = [
-        { href: `/${lang}`, icon: <HomeIcon className="w-6 h-6 " /> },
-        { href: `/${lang}/projects`, icon: <ProjectIcon className="w-6 h-6 " /> },
-        { href: `/${lang}/gallery`, icon: <GalleryIcon className="w-6 h-6 " /> },
+        { href: `/${locale}`, icon: <HomeIcon className="w-6 h-6 " /> },
+        { href: `/${locale}/projects`, icon: <ProjectIcon className="w-6 h-6 " /> },
+        { href: `/${locale}/gallery`, icon: <GalleryIcon className="w-6 h-6 " /> },
     ];
 
     return (
@@ -37,7 +37,7 @@ export default function Navbar({ lang }: NavbarProps) {
                     // If active, add an extra background class
                     const activeClass = isActive(href) ? 'border-2 border-primary' : '';
                     return (
-                        <Link key={index} href={href} className={`p-2 ${activeClass}  rounded-xl hover:bg-primary/30`}>
+                        <Link prefetch={true} key={index} href={href} className={`p-2 ${activeClass}  rounded-xl hover:bg-primary/30`}>
                             <span className="text-primary">{icon}</span>
                         </Link>
                     );
