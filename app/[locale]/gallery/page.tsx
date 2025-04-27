@@ -67,7 +67,7 @@ export default function Gallery() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-    const PAGE_SIZE = 3;
+    const PAGE_SIZE = 8;
     const hasFetchedRef = useRef(false);
 
     const loadGallery = async (pageNumber: number) => {
