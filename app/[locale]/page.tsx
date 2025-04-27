@@ -5,13 +5,18 @@ import SkillsGrid from "@/components/home/SkillsGrid";
 import AboutSection from "@/components/home/AboutSection";
 import ContactSection from "@/components/home/ContactSection";
 import {notFound} from "next/navigation";
-
+export function generateStaticParams() {
+    return [
+        { locale: 'en' },
+        { locale: 'fr' },
+    ];
+}
 export default async function HomePage({params}: {
-    params: Promise<{ lang: string }>
+    params: Promise<{ locale: string }>
 }) {
-    const { lang } = await params
+    const { locale } = await params
 
-    const homePage = await getHomeData(lang)
+    const homePage = await getHomeData(locale)
     const {
         fullname,
         baseline,
@@ -32,12 +37,12 @@ export default async function HomePage({params}: {
     const alt = profilePicture.alternativeText || fullname;
 
     if (!homePage) {
-        notFound() // ⬅️ va afficher ton not-found.tsx
+        notFound()
     }
     return (
             <div className="py-10 w-11/12 sm:w-10/12 md:4/6 xl:w-3/6 mx-auto">
                 <HeaderIntro
-                    lang={lang}
+                    locale={locale}
                     imgUrl={imgUrl}
                     alt={alt}
                     fullname={fullname}

@@ -1,0 +1,11 @@
+{
+  "HeaderSection": {
+    "projects": "Projets",
+    "gallery": "Galerie"
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "message": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retourner à la page d'accueil"
+  }
+}
