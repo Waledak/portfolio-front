@@ -6,7 +6,7 @@ import {notFound} from "next/navigation";
 
 type Props = {
     children: React.ReactNode;
-    params: { locale: string };
+    params: Promise<{ locale: string }>;
 };
 
 
