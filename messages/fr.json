@@ -7,5 +7,10 @@
     "title": "Page introuvable",
     "message": "La page que vous recherchez n'existe pas.",
     "backHome": "Retourner à la page d'accueil"
+  },
+  "Gallery": {
+    "retryLoadData": "Réessayer",
+    "noMorePhoto": "Vous avez vu toutes les images",
+    "errorMessage": "Impossible de charger les images. Veuillez réessayer plus tard."
   }
 }
