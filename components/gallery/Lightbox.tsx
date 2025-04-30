@@ -60,7 +60,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose }) =>
             </button>
 
             <div
-                className="relative max-w-5xl w-full h-full flex items-center justify-center p-4"
+                className="relative max-w-[90dvw] w-full h-full flex items-center justify-center p-4"
                 onClick={handleContentClick}
             >
                 {isLoading && (
