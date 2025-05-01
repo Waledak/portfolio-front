@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { fetchGallery } from '@/lib/strapi';
@@ -18,6 +18,7 @@ export default function Gallery() {
     const [error, setError] = useState<boolean>(false);
     const PAGE_SIZE = 8;
     const hasFetchedRef = useRef(false);
+    const didFirstLoad = useRef(false);
     const t = useTranslations("Gallery")
 
     const loadGallery = useCallback(async (pageNumber: number) => {
@@ -37,6 +38,9 @@ export default function Gallery() {
             }
 
             setPage(pageNumber);
+            if(!didFirstLoad.current) {
+                didFirstLoad.current = true;
+            }
             setError(false);
         } catch (error) {
             console.error('Error fetching gallery:', error);
@@ -95,12 +99,19 @@ export default function Gallery() {
                         </button>
                     </div>
                 )}
-
                 <InfiniteScroll
                     dataLength={images.length}
                     next={() => loadGallery(page + 1)}
                     hasMore={hasMore}
-                    loader={<GallerySkeleton />}
+                    loader={
+                            didFirstLoad.current ? (
+                                <div className="m-auto w-10 h-10 flex items-center justify-center my-5">
+                                    <div className="w-10 h-10 rounded-full border-4 border-t-secondary border-white/30 animate-spin"></div>
+                                </div>
+                            ) : (
+                                <GallerySkeleton />
+                            )
+                    }
                     scrollableTarget="scrollableMainContentContainer"
                     endMessage={
                         images.length > 0 && (

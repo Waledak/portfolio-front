@@ -34,7 +34,7 @@ export default function ProjectCard({
                 <div className="card-actions gap-0">
                     {project.techno.map((techno, idx) => (
                         <div className="w-full flex flex-col gap-1 mb-2" key={`${techno.id}-${idx}`}>
-                            <div className="divider divider-start my-2 h-1">
+                            <div className="divider divider-start my-2 h-1 text-black">
                                 {techno.name}
                             </div>
                             <div className="flex flex-wrap gap-2">
