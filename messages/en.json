@@ -9,8 +9,12 @@
     "backHome": "Return to homepage"
   },
   "Gallery": {
+    "title": "Gallery",
     "retryLoadData": "Retry",
     "noMorePhoto": "You've seen all pictures",
     "errorMessage": "Can't load photos. Please try later."
+  },
+  "Project": {
+    "title": "Projects"
   }
 }

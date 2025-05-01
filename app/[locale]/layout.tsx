@@ -21,7 +21,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
       <NextIntlClientProvider locale={locale} messages={messages}>
-      <div className="flex flex-col max-h-screen h-screen">
+      <div className="flex flex-col max-h-dvh h-dvh">
           <Navbar locale={locale} />
           <main className="flex-1 min-h-0 max-h-full overflow-y-auto" id="scrollableMainContentContainer">
               {children}

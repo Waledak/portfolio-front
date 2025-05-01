@@ -9,8 +9,12 @@
     "backHome": "Retourner à la page d'accueil"
   },
   "Gallery": {
+    "title": "Galerie",
     "retryLoadData": "Réessayer",
     "noMorePhoto": "Vous avez vu toutes les images",
     "errorMessage": "Impossible de charger les images. Veuillez réessayer plus tard."
+  },
+  "Project": {
+    "title": "Projets"
   }
 }

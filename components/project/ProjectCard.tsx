@@ -28,18 +28,16 @@ export default function ProjectCard({
                         {project.type}
                     </div>
                 </h2>
-
                 <p className="text-gray-700 mb-2">
                     {project.description}
                 </p>
-
                 <div className="card-actions gap-0">
                     {project.techno.map((techno, idx) => (
-                        <div className="w-full" key={`${techno.id}-${idx}`}>
+                        <div className="w-full flex flex-col gap-1 mb-2" key={`${techno.id}-${idx}`}>
+                            <div className="divider divider-start my-2 h-1">
+                                {techno.name}
+                            </div>
                             <div className="flex flex-wrap gap-2">
-                                <div className="badge badge-outline badge-sm badge-secondary">
-                                    {techno.name}
-                                </div>
                                 {techno.tags.map((tag) => (
                                     <div
                                         className="badge badge-sm badge-secondary"
@@ -49,9 +47,6 @@ export default function ProjectCard({
                                     </div>
                                 ))}
                             </div>
-                            {idx < project.techno.length - 1 && (
-                                <div className="divider my-2 h-1" />
-                            )}
                         </div>
                     ))}
                 </div>

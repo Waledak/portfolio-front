@@ -1,0 +1,6 @@
+#projectTitle{
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(303deg,rgba(110, 59, 255, 1) 80%, rgba(51, 38, 100, 1) 100%);
+}
