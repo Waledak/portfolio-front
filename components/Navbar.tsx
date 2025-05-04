@@ -25,19 +25,19 @@ export default function Navbar({ locale }: NavbarProps) {
 
     // Define the links
     const links = [
-        { href: `/${locale}`, icon: <HomeIcon className="w-6 h-6 " /> },
-        { href: `/${locale}/projects`, icon: <ProjectIcon className="w-6 h-6 " /> },
-        { href: `/${locale}/gallery`, icon: <GalleryIcon className="w-6 h-6 " /> },
+        { href: `/${locale}`, icon: <HomeIcon className="w-6 h-6 " />, label: 'Home' },
+        { href: `/${locale}/projects`, icon: <ProjectIcon className="w-6 h-6 " />, label: 'Projects' },
+        { href: `/${locale}/gallery`, icon: <GalleryIcon className="w-6 h-6 " />, label: 'Gallery' },
     ];
 
     return (
         <nav className="navbar bg-base-100 shadow-sm p-4">
             <div className="flex justify-center gap-3 flex-wrap flex-1">
-                {links.map(({ href, icon }, index) => {
+                {links.map(({ href, icon, label }, index) => {
                     // If active, add an extra background class
                     const activeClass = isActive(href) ? 'border-2 border-primary' : '';
                     return (
-                        <Link prefetch={true} key={index} href={href} className={`p-2 ${activeClass}  rounded-xl hover:bg-primary/30`}>
+                        <Link prefetch={true} aria-label={label} key={index} href={href} className={`p-2 ${activeClass} rounded-xl hover:bg-primary/30`}>
                             <span className="text-primary">{icon}</span>
                         </Link>
                     );

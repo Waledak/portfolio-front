@@ -1,256 +1,213 @@
 "use client"
+import { useRef, useState, useMemo, useEffect } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import * as THREE from 'three'
 
-import { useRef, useMemo } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls } from "@react-three/drei"
+// Custom shader material for round particles
+const ParticleMaterial = () => {
+    const materialRef = useRef()
 
-export default function ParticleBackground() {
-    const bg =  "bg-neutral-100"
-    return (
-        <div className={
-            `fixed inset-0 -z-10 transition-all ${bg}`
-        }>
-            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-                <ParticleTetrahedrons />
-                <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-            </Canvas>
-        </div>
-    )
+    // Custom shader for circular particles
+    const shaderMaterial = useMemo(() => {
+        return new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uColor1: { value: new THREE.Color("#332664") },
+                uColor2: { value: new THREE.Color("#6E3BFF") }
+            },
+            vertexShader: `
+        uniform float uTime;
+        varying vec3 vColor;
+        
+        void main() {
+          vColor = color;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = 4.0;
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+            fragmentShader: `
+        uniform vec3 uColor1;
+        uniform vec3 uColor2;
+        varying vec3 vColor;
+        
+        void main() {
+          // Calculate distance from center of point
+          float dist = length(gl_PointCoord - vec2(0.5));
+          
+          // Discard fragments outside of circle
+          if (dist > 0.5) discard;
+          
+          // Mix the two colors based on vColor
+          float mixFactor = vColor.x;
+          vec3 finalColor = mix(uColor1, uColor2, mixFactor);
+          
+          gl_FragColor = vec4(finalColor, 0.8);
+        }
+      `,
+            transparent: true,
+            depthWrite: false,
+            vertexColors: true
+        })
+    }, [])
+
+    useFrame(({ clock }) => {
+        if (materialRef.current) {
+            materialRef.current.uniforms.uTime.value = clock.getElapsedTime()
+        }
+    })
+
+    return <primitive ref={materialRef} object={shaderMaterial} attach="material" />
 }
 
-function ParticleTetrahedrons() {
+// Custom material for lines
+const LineMaterial = () => {
+    const materialRef = useRef()
 
-    // Create particles
-    const count = 100 // Total number of particles
-    const tetrahedronCount = 12 // Number of tetrahedrons to create
-    const particlesRef = useRef(null)
-    const lineRef = useRef(null)
+    const lineMaterial = useMemo(() => {
+        return new THREE.LineBasicMaterial({
+            color: new THREE.Color("#6E3BFF"),
+            transparent: true,
+            opacity: 0.2,
+            linewidth: 1
+        })
+    }, [])
 
-    // Generate random positions for particles
+    return <primitive ref={materialRef} object={lineMaterial} attach="material" />
+}
+
+function ParticleSystem({ count = 1000, mouseX = 0, mouseY = 0 }) {
+    const particlesRef = useRef()
+    const linesRef = useRef()
+
+    // Generate random particles
     const particles = useMemo(() => {
         const temp = []
         for (let i = 0; i < count; i++) {
             const x = (Math.random() - 0.5) * 10
             const y = (Math.random() - 0.5) * 10
             const z = (Math.random() - 0.5) * 10
-            temp.push({
-                x,
-                y,
-                z,
-                vx: Math.random() * 0.01 - 0.005,
-                vy: Math.random() * 0.01 - 0.005,
-                vz: Math.random() * 0.01 - 0.005,
-            })
+            temp.push({ x, y, z })
         }
         return temp
     }, [count])
 
-    // Create tetrahedrons - each with exactly 4 particles
-    const tetrahedrons = useMemo(() => {
-        const temp = []
-        // Create tetrahedrons by selecting 4 random particles that are somewhat close to each other
-        for (let t = 0; t < tetrahedronCount; t++) {
-            // Pick a random starting particle
-            const startIdx = Math.floor(Math.random() * count)
-            const startParticle = particles[startIdx]
-
-            // Find 3 closest particles to this one
-            const distances = []
-            for (let i = 0; i < count; i++) {
-                if (i === startIdx) continue
-
-                const dist = Math.sqrt(
-                    Math.pow(particles[i].x - startParticle.x, 2) +
-                    Math.pow(particles[i].y - startParticle.y, 2) +
-                    Math.pow(particles[i].z - startParticle.z, 2),
-                )
-
-                distances.push({ index: i, distance: dist })
-            }
-
-            // Sort by distance and take the 3 closest
-            distances.sort((a, b) => a.distance - b.distance)
-            const closestIndices = distances.slice(0, 3).map((d) => d.index)
-
-            // Create a tetrahedron with these 4 particles
-            temp.push([startIdx, ...closestIndices])
-        }
-        return temp
-    }, [particles, count, tetrahedronCount])
-
-    // Update particle positions on each frame
-    useFrame(() => {
-        if (!particlesRef.current || !lineRef.current) return
-
-        // Update particle positions
-        for (let i = 0; i < count; i++) {
-            particles[i].x += particles[i].vx
-            particles[i].y += particles[i].vy
-            particles[i].z += particles[i].vz
-
-            // Boundary check and bounce
-            if (Math.abs(particles[i].x) > 5) particles[i].vx *= -1
-            if (Math.abs(particles[i].y) > 5) particles[i].vy *= -1
-            if (Math.abs(particles[i].z) > 5) particles[i].vz *= -1
-
-            // Update particle positions in the buffer
-            particlesRef.current.geometry.attributes.position.array[i * 3] = particles[i].x
-            particlesRef.current.geometry.attributes.position.array[i * 3 + 1] = particles[i].y
-            particlesRef.current.geometry.attributes.position.array[i * 3 + 2] = particles[i].z
-        }
-        particlesRef.current.geometry.attributes.position.needsUpdate = true
-
-        // Update line positions
-        const positions = lineRef.current.geometry.attributes.position.array
-        let index = 0
-
-        tetrahedrons.forEach(([i, j, k, l]) => {
-            // Edge 1: i to j
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
-
-            // Edge 2: j to k
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
-
-            // Edge 3: k to l
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
-
-            // Edge 4: l to i
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
-
-            // Edge 5: i to k
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
-
-            // Edge 6: j to l
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
-        })
-
-        lineRef.current.geometry.attributes.position.needsUpdate = true
-    })
-
-    // Create initial positions for particles
-    const particlePositions = useMemo(() => {
+    // Create geometry with particles
+    const particlesGeometry = useMemo(() => {
+        const geometry = new THREE.BufferGeometry()
         const positions = new Float32Array(count * 3)
+        const colors = new Float32Array(count * 3)
+
         for (let i = 0; i < count; i++) {
             positions[i * 3] = particles[i].x
             positions[i * 3 + 1] = particles[i].y
             positions[i * 3 + 2] = particles[i].z
+
+            // Color mixing factor
+            const mixFactor = Math.random()
+            colors[i * 3] = mixFactor
+            colors[i * 3 + 1] = 0
+            colors[i * 3 + 2] = 0
         }
-        return positions
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+        return geometry
     }, [particles, count])
 
-    // Create initial positions for lines
-    const linePositions = useMemo(() => {
-        // Each tetrahedron has 6 edges, each edge has 2 points, each point has 3 coordinates
-        const positions = new Float32Array(tetrahedrons.length * 6 * 2 * 3)
-        let index = 0
+    // Find closest particles and create connections
+    const lineGeometry = useMemo(() => {
+        // Calculate distances between particles and find closest neighbors
+        const connections = []
 
-        tetrahedrons.forEach(([i, j, k, l]) => {
-            // Edge 1: i to j
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
+        // Adjust this value to balance performance and visual density
+        const connectionDensity = 9
 
-            // Edge 2: j to k
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
+        for (let i = 0; i < count; i += connectionDensity) {
+            // Calculate distances to all other particles
+            const distances = []
 
-            // Edge 3: k to l
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
+            for (let j = 0; j < count; j++) {
+                if (i !== j) {
+                    const dx = particles[i].x - particles[j].x
+                    const dy = particles[i].y - particles[j].y
+                    const dz = particles[i].z - particles[j].z
+                    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
 
-            // Edge 4: l to i
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
+                    distances.push({ index: j, distance })
+                }
+            }
 
-            // Edge 5: i to k
-            positions[index++] = particles[i].x
-            positions[index++] = particles[i].y
-            positions[index++] = particles[i].z
-            positions[index++] = particles[k].x
-            positions[index++] = particles[k].y
-            positions[index++] = particles[k].z
+            // Sort by distance and take the closest 3
+            distances.sort((a, b) => a.distance - b.distance)
+            const closestThree = distances.slice(0, 3)
 
-            // Edge 6: j to l
-            positions[index++] = particles[j].x
-            positions[index++] = particles[j].y
-            positions[index++] = particles[j].z
-            positions[index++] = particles[l].x
-            positions[index++] = particles[l].y
-            positions[index++] = particles[l].z
-        })
+            // Add lines for each connection
+            closestThree.forEach(neighbor => {
+                connections.push(particles[i].x, particles[i].y, particles[i].z)
+                connections.push(particles[neighbor.index].x, particles[neighbor.index].y, particles[neighbor.index].z)
+            })
+        }
 
-        return positions
-    }, [particles, tetrahedrons])
+        const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(connections, 3))
+        return geometry
+    }, [particles, count])
+
+    // Animation
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime() * 0.2
+
+        if (particlesRef.current && linesRef.current) {
+            particlesRef.current.rotation.x = time * 0.05 + mouseY * 0.01
+            particlesRef.current.rotation.y = time * 0.07 + mouseX * 0.01
+
+            // Keep lines in sync with particles
+            linesRef.current.rotation.x = particlesRef.current.rotation.x
+            linesRef.current.rotation.y = particlesRef.current.rotation.y
+        }
+    })
 
     return (
-        <group>
+        <>
             <points ref={particlesRef}>
-                <bufferGeometry>
-                    <bufferAttribute
-                        attach="attributes-position"
-                        count={particlePositions.length / 3}
-                        array={particlePositions}
-                        itemSize={3}
-                    />
-                </bufferGeometry>
-                <pointsMaterial size={0.05} color="#871cd9" sizeAttenuation={true} transparent opacity={0.8} />
+                <primitive object={particlesGeometry} attach="geometry" />
+                <ParticleMaterial />
             </points>
-            <lineSegments ref={lineRef}>
-                <bufferGeometry>
-                    <bufferAttribute
-                        attach="attributes-position"
-                        count={linePositions.length / 3}
-                        array={linePositions}
-                        itemSize={3}
-                    />
-                </bufferGeometry>
-                <lineBasicMaterial color="#871cd9" transparent opacity={0.2} />
+
+            <lineSegments ref={linesRef}>
+                <primitive object={lineGeometry} attach="geometry" />
+                <LineMaterial />
             </lineSegments>
-        </group>
+        </>
     )
 }
+
+function Background() {
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            // Normalize mouse position to range [-1, 1]
+            const x = (e.clientX / window.innerWidth) * 2 - 1
+            const y = -(e.clientY / window.innerHeight) * 2 + 1
+            setMousePosition({ x, y })
+        }
+
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+        }
+    }, [])
+
+    return (
+        <div className="fixed top-0 left-0 w-full h-full -z-10 bg-gradient-to-b from-gray-50 to-gray-200">
+            <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 2]} // Optimize for device pixel ratio
+                    gl={{ antialias: true, alpha: true }}>
+                <ParticleSystem mouseX={mousePosition.x} mouseY={mousePosition.y} />
+            </Canvas>
+        </div>
+    )
+}
+
+export default Background
