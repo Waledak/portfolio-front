@@ -17,6 +17,7 @@ export default function LanguageSwitcher() {
     return (
         <select
             name="locale"
+            aria-label={`Language ${pathname}`}
             className="select select-bordered select-primary select-sm cursor-pointer text-black"
             onChange={handleChange}
             defaultValue={pathname.split('/')[1]}

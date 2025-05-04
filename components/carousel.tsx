@@ -45,6 +45,7 @@ export default function PhotoCarousel({images}: Props) {
             {/* Navigation arrows */}
             <button
                 onClick={scrollPrev}
+                aria-label="Carousel image précédente"
                 className="absolute cursor-pointer top-1/2 left-4 -translate-y-1/2 bg-white/70 hover:bg-white rounded-full p-2 shadow"
             >
                 <ArrowLeftIcon className="h-3 w-3 text-black" />
@@ -52,6 +53,7 @@ export default function PhotoCarousel({images}: Props) {
 
             <button
                 onClick={scrollNext}
+                aria-label="Carousel image suivante"
                 className="absolute cursor-pointer top-1/2 right-4 -translate-y-1/2 bg-white/70 hover:bg-white rounded-full p-2 shadow"
             >
                 <ArrowRightIcon className="h-3 w-3 text-black" />
