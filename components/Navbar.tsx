@@ -37,7 +37,7 @@ export default function Navbar({ locale }: NavbarProps) {
                     // If active, add an extra background class
                     const activeClass = isActive(href) ? 'border-2 border-primary' : '';
                     return (
-                        <Link prefetch={true} aria-label={label} key={index} href={href} className={`p-2 ${activeClass} rounded-xl hover:bg-primary/30`}>
+                        <Link aria-label={label} key={index} href={href} className={`p-2 ${activeClass} rounded-xl hover:bg-primary/30`}>
                             <span className="text-primary">{icon}</span>
                         </Link>
                     );

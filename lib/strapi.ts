@@ -3,9 +3,7 @@ import {GalleryResponse, HomePage, ProjectResponse} from "@/types/strapi.type";
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 
 export async function getHomeData(locale = 'fr'): Promise<HomePage> {
-    const res = await fetch(`${STRAPI_URL}/api/home-page?populate[0]=profilePicture&populate[1]=skills.tags&populate[2]=photosPreview&populate[3]=contactLink&populate[4]=cv&locale=${locale}`, {
-        next: { revalidate: 60 }
-    })
+    const res = await fetch(`${STRAPI_URL}/api/home-page?populate[0]=profilePicture&populate[1]=skills.tags&populate[2]=photosPreview&populate[3]=contactLink&populate[4]=cv&locale=${locale}`)
 
     if (!res.ok) {
         console.error('Strapi error:', res.status, await res.text())
@@ -31,12 +29,7 @@ export async function fetchGallery(page = 1, pageSize = 12): Promise<GalleryResp
 
 export async function fetchProjects(locale = 'fr'): Promise<ProjectResponse> {
     const res = await fetch(
-        `${STRAPI_URL}/api/projects?populate[0]=image&populate[1]=techno.tags&locale=${locale}&sort=startDate:Desc`,
-        {
-            next: {
-                revalidate: 60 // Cache pendant 60 secondes
-            }
-        }
+        `${STRAPI_URL}/api/projects?populate[0]=image&populate[1]=techno.tags&locale=${locale}&sort=startDate:Desc`
     );
 
     if (!res.ok) {

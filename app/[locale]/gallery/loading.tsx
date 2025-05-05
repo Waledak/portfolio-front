@@ -1,6 +1,6 @@
-import React from "react";
+"use client"
 import {useTranslations} from "next-intl";
-import {GallerySkeleton} from "@/components/gallery/index";
+import {GallerySkeleton} from "@/components/gallery";
 
 const LoadingGallery = () => {
     const t = useTranslations("Gallery")

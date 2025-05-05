@@ -1,4 +1,3 @@
-import {Suspense, use} from 'react';
 import { getHomeData } from '@/lib/strapi';
 import HeaderIntro from '@/components/home/HeaderIntro';
 import 'leaflet/dist/leaflet.css';
@@ -6,7 +5,6 @@ import SkillsGrid from "@/components/home/SkillsGrid";
 import AboutSection from "@/components/home/AboutSection";
 import ContactSection from "@/components/home/ContactSection";
 import { notFound } from "next/navigation";
-import LoadingHomeSkeleton from "@/components/home/LoadingHome";
 
 export function generateStaticParams() {
     return [
@@ -15,8 +13,9 @@ export function generateStaticParams() {
     ];
 }
 
-const HomeContent = ({ locale }: { locale: string }) => {
-    const homePage = use(getHomeData(locale));
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }){
+    const { locale } = await params;
+    const homePage = await getHomeData(locale);
 
     if (!homePage) {
         notFound();
@@ -69,13 +68,3 @@ const HomeContent = ({ locale }: { locale: string }) => {
         </div>
     );
 };
-
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-    const { locale } = await params;
-
-    return (
-        <Suspense fallback={<LoadingHomeSkeleton />}>
-            <HomeContent locale={locale} />
-        </Suspense>
-    );
-}
