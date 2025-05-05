@@ -1,8 +1,4 @@
-'use client';
-
-import React from 'react';
-
-export default function LoadingHomeSkeleton() {
+function LoadingHomeSkeleton() {
     return (
         <div className="py-10 w-11/12 sm:w-10/12 md:4/6 xl:w-3/6 mx-auto">
             {/* Header Skeleton */}
@@ -95,3 +91,4 @@ export default function LoadingHomeSkeleton() {
         </div>
     );
 }
+export default LoadingHomeSkeleton;

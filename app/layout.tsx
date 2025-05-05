@@ -26,9 +26,6 @@ export const metadata: Metadata = {
         shortcut: "/favicon/favicon.ico",
     }
 };
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -16,9 +16,7 @@ export default async function RootLayout({ children, params }: Props) {
     if (!hasLocale(routing.locales, locale)) {
         notFound();
     }
-
     const messages = (await import(`../../messages/${locale}.json`)).default;
-
   return (
       <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="flex flex-col max-h-dvh h-dvh">
