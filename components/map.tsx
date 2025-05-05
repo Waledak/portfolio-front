@@ -4,10 +4,11 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-L.Icon.Default.mergeOptions({
-    iconUrl: '/leaflet/marker-icon.png',
-    shadowUrl: '/leaflet/marker-shadow.png',
-})
+import iconUrl        from 'leaflet/dist/images/marker-icon.png';
+import iconRetinaUrl  from 'leaflet/dist/images/marker-icon-2x.png';
+import shadowUrl      from 'leaflet/dist/images/marker-shadow.png';
+
+L.Icon.Default.mergeOptions({ iconRetinaUrl, iconUrl, shadowUrl });
 
 export default function Map() {
     return (
