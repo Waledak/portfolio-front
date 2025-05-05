@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {useEffect, useState, useRef, useCallback, Suspense} from 'react';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { fetchGallery } from '@/lib/strapi';
 import { GalleryItem } from '@/types/strapi.type';
 import {useTranslations} from "next-intl";
-import {GalleryImage, GallerySkeleton, Lightbox} from "@/components/gallery";
+import {GalleryImage, GallerySkeleton, Lightbox, LoadingGallery} from "@/components/gallery";
 import "./gallery.css"
 
-export default function Gallery() {
+const GalleryContent = () => {
     const [images, setImages] = useState<GalleryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -152,4 +152,12 @@ export default function Gallery() {
             </div>
         </div>
     );
+}
+
+export default function Gallery() {
+    return (
+        <Suspense fallback={<LoadingGallery/>}>
+            <GalleryContent />
+        </Suspense>
+    )
 }

@@ -131,7 +131,7 @@ export interface HomePage extends StrapiTimestamps {
     aboutSectionName: string
     aboutMe: string
     skillSectionName: string
-    photosPreview: StrapiMediaFormat[]
+    photosPreview: StrapiMedia[]
     contactSectionName: string
     contactDescription: string
     contactLink: Contact[]

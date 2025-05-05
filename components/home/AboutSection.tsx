@@ -3,12 +3,12 @@
 import ReactMarkdown from 'react-markdown'
 import PhotoCarousel from "@/components/carousel";
 import MapWrapper from "@/components/mapWrapper";
-import { StrapiMediaFormat} from "@/types/strapi.type";
+import {StrapiMedia} from "@/types/strapi.type";
 
 type AboutSectionProps = {
     title: string
     content: string
-    photos:  StrapiMediaFormat[]
+    photos:  StrapiMedia[]
 }
 
 export default function AboutSection({ title, content, photos }: AboutSectionProps) {

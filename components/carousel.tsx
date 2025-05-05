@@ -5,9 +5,9 @@ import Autoplay from 'embla-carousel-autoplay'
 import { useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid'
-import {StrapiMediaFormat} from "@/types/strapi.type";
+import {StrapiMedia} from "@/types/strapi.type";
 type Props = {
-    images: StrapiMediaFormat[]
+    images: StrapiMedia[]
 }
 export default function PhotoCarousel({images}: Props) {
     const autoplay = useRef(
@@ -32,9 +32,10 @@ export default function PhotoCarousel({images}: Props) {
                     {images.map((img, i) => (
                         <div className="relative  flex-[0_0_100%] h-48" key={i}>
                             <Image
-                                src={img.url}
+                                src={img.formats.small?.url ?? img.url}
                                 alt={img.name || `Photo ${i + 1}`}
                                 fill
+
                                 className="object-cover  w-full h-full"
                             />
                         </div>
