@@ -34,7 +34,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         contactSectionName,
         contactDescription,
         contactLink,
-        cv
+        cv,
+        additionalFiles
     } = homePage;
 
     const imgUrl = profilePicture.formats.large?.url || profilePicture.url;
@@ -50,6 +51,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 baseline={baseline}
                 description={description}
                 cvUrl={cv.url}
+                additionalFiles={additionalFiles}
             />
 
             <SkillsGrid title={skillSectionName} skills={skills} />
