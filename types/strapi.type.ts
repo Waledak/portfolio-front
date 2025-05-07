@@ -136,4 +136,8 @@ export interface HomePage extends StrapiTimestamps {
     contactDescription: string
     contactLink: Contact[]
     cv: StrapiMedia
+    additionalFiles: {
+        name: string,
+        file: StrapiMedia
+    }[]
 }

@@ -1,7 +1,9 @@
 {
   "HeaderSection": {
     "projects": "Projets",
-    "gallery": "Galerie"
+    "gallery": "Galerie",
+    "cv": "CV",
+    "downloadFiles": "Télécharger les fichiers"
   },
   "NotFound": {
     "title": "Page introuvable",

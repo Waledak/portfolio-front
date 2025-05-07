@@ -1,7 +1,9 @@
 {
   "HeaderSection": {
     "projects": "Projects",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "cv": "CV",
+    "downloadFiles": "Download Files"
   },
   "NotFound": {
     "title": "Page not found",
