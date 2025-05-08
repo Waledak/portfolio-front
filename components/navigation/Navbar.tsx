@@ -2,13 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import LanguageSwitcher from "@/components/navigation/LanguageSwitcher";
 import * as LucideIcons from "lucide-react";
+import {JSX} from "react";
 
-type NavbarProps = {
+interface NavbarProps {
     locale: string;
 }
 
+interface NavLink {
+    href: string;
+    icon: JSX.Element;
+    label: string;
+}
+
+/**
+ * Main navigation component for the site
+ * Displays navigation links and language switcher
+ */
 export default function Navbar({ locale }: NavbarProps) {
     const pathname = usePathname();
 
@@ -19,12 +30,11 @@ export default function Navbar({ locale }: NavbarProps) {
 
     // Helper function to determine if a link is active
     const isActive = (href: string) => {
-        // You might tweak the condition if you need exact matching or if you have nested routes.
         return pathname === href;
     };
 
     // Define the links
-    const links = [
+    const links: NavLink[] = [
         { href: `/${locale}`, icon: <HomeIcon className="w-6 h-6 " />, label: 'Home' },
         { href: `/${locale}/projects`, icon: <ProjectIcon className="w-6 h-6 " />, label: 'Projects' },
         { href: `/${locale}/gallery`, icon: <GalleryIcon className="w-6 h-6 " />, label: 'Gallery' },
@@ -33,11 +43,16 @@ export default function Navbar({ locale }: NavbarProps) {
     return (
         <nav className="navbar bg-base-100 shadow-sm p-4">
             <div className="flex justify-center gap-3 flex-wrap flex-1">
-                {links.map(({ href, icon, label }, index) => {
+                {links.map(({ href, icon, label }) => {
                     // If active, add an extra background class
                     const activeClass = isActive(href) ? 'border-2 border-primary' : '';
                     return (
-                        <Link aria-label={label} key={index} href={href} className={`p-2 ${activeClass} rounded-xl hover:bg-primary/30`}>
+                        <Link 
+                            aria-label={label} 
+                            key={href} 
+                            href={href} 
+                            className={`p-2 ${activeClass} rounded-xl hover:bg-primary/30`}
+                        >
                             <span className="text-primary">{icon}</span>
                         </Link>
                     );

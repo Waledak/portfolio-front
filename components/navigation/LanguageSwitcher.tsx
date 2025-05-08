@@ -2,6 +2,9 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 
+/**
+ * A component that allows users to switch between languages
+ */
 export default function LanguageSwitcher() {
     const router = useRouter()
     const pathname = usePathname()
