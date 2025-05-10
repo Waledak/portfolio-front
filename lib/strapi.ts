@@ -134,11 +134,15 @@ export async function fetchGallery(
 /**
  * Fetch projects data
  * @param locale - Language locale (default: 'fr')
+ * @param page - Page number (default: 1)
+ * @param pageSize - Number of items per page (default: 100)
  * @param options - Cache and revalidation options
  * @returns Promise with ProjectResponse data
  */
 export async function fetchProjects(
-    locale = 'fr', 
+    locale = 'fr',
+    page = 1,
+    pageSize = 25,
     options: Omit<ApiRequestOptions, 'params'> = {}
 ): Promise<ProjectResponse> {
     return await fetchApi<ProjectResponse>('projects', {
@@ -147,7 +151,9 @@ export async function fetchProjects(
             'populate[0]': 'image',
             'populate[1]': 'techno.tags',
             locale,
-            'sort': 'startDate:Desc'
+            'sort': 'startDate:Desc',
+            'pagination[page]': page,
+            'pagination[pageSize]': pageSize
         }
     });
 }

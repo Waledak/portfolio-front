@@ -8,7 +8,7 @@ export default async function ProjectsPage({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-    const projects = await fetchProjects(locale);
+    const projects = await fetchProjects(locale, 1, 25);
     return (
         <ProjectCardsContainer projectData={projects.data} />
     );
