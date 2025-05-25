@@ -1,5 +1,3 @@
-'use client'
-
 import ReactMarkdown from 'react-markdown'
 import PhotoCarousel from "@/components/media/PhotoCarousel";
 import MapWrapper from "@/components/map/MapWrapper";
