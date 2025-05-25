@@ -1,5 +1,3 @@
-'use client'
-
 import { Skill } from "@/types/strapi.type";
 import SkillCard from "@/components/ui/SkillCard";
 import Section from "@/components/ui/Section";

@@ -1,5 +1,3 @@
-'use client'
-
 import { Contact } from "@/types/strapi.type";
 import ContactLink from "@/components/ui/ContactLink";
 
