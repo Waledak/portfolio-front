@@ -14,7 +14,7 @@ export default function ProjectCard({
             <figure className="relative w-full h-36">
                 <Image
                     fill
-                    src={project.image.formats.large?.url ?? project.image.url}
+                    src={project.image.formats?.large?.url ?? project.image.url}
                     alt={project.image.name}
                     className="object-contain p-3"
                 />
