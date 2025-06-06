@@ -15,7 +15,7 @@ const GalleryImage: React.FC<GalleryImageProps> = ({ img, index, onClick }) => {
             )}
             <div className="overflow-hidden rounded-lg">
                 <Image
-                    src={img.image.formats?.large?.url || img.image.url}
+                    src={img.image.formats?.medium?.url || img.image.url}
                     alt={img.image.name || 'Gallery Image'}
                     width={img.image.width || 500}
                     height={img.image.height || 300}
