@@ -3,6 +3,7 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useQueryState } from 'nuqs';
 import { fetchGallery } from '@/lib/strapi';
 import { GalleryItem } from '@/types/strapi.type';
 import {useTranslations} from "next-intl";
@@ -14,12 +15,24 @@ export default function Gallery() {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const [error, setError] = useState<boolean>(false);
     const PAGE_SIZE = 8;
     const hasFetchedRef = useRef(false);
     const didFirstLoad = useRef(false);
-    const t = useTranslations("Gallery")
+    const t = useTranslations("Gallery");
+
+    // Use nuqs to manage the lightbox state via URL
+    const [lightboxDocumentId, setLightboxDocumentId] = useQueryState('image', {
+        defaultValue: null,
+        parse: (value) => value || null,
+        serialize: (value) => value || '',
+        clearOnDefault: true
+    });
+
+    // Calculate lightbox index from documentId
+    const lightboxIndex = lightboxDocumentId
+        ? images.findIndex(img => img.documentId === lightboxDocumentId)
+        : null;
 
     const loadGallery = useCallback(async (pageNumber: number) => {
         try {
@@ -58,25 +71,60 @@ export default function Gallery() {
         }
     }, [loadGallery]);
 
+    // Effect to handle lightbox opening when URL contains image parameter
+    useEffect(() => {
+        if (lightboxDocumentId && images.length > 0) {
+            const imageExists = images.some(img => img.documentId === lightboxDocumentId);
+
+            if (imageExists) {
+                // Disable scroll when lightbox is open
+                document.body.style.overflow = 'hidden';
+            } else {
+                // If image doesn't exist in current loaded images, we might need to load more
+                // You could implement logic here to fetch more pages until the image is found
+                console.warn(`Image with documentId ${lightboxDocumentId} not found in loaded images`);
+            }
+        } else if (!lightboxDocumentId) {
+            // Re-enable scroll when lightbox is closed
+            document.body.style.overflow = '';
+        }
+    }, [lightboxDocumentId, images]);
+
     // Open lightbox using view transition if available
     const openLightbox = useCallback((index: number) => {
+        const img = images[index];
+        if (!img?.documentId) return;
+
         if ('startViewTransition' in document) {
             document.startViewTransition(() => {
-                setLightboxIndex(index);
+                setLightboxDocumentId(img.documentId);
             });
         } else {
-            setLightboxIndex(index);
+            setLightboxDocumentId(img.documentId);
+        }
+    }, [images, setLightboxDocumentId]);
+
+    // Close lightbox by clearing the URL parameter
+    const closeLightbox = useCallback(() => {
+        setLightboxDocumentId(null);
+    }, [setLightboxDocumentId]);
+
+    // Navigate to next/previous image in lightbox
+    const navigateLightbox = useCallback((direction: 'next' | 'prev') => {
+        if (lightboxIndex === null) return;
+
+        let newIndex: number;
+        if (direction === 'next') {
+            newIndex = lightboxIndex + 1 >= images.length ? 0 : lightboxIndex + 1;
+        } else {
+            newIndex = lightboxIndex - 1 < 0 ? images.length - 1 : lightboxIndex - 1;
         }
 
-        // Disable scroll when lightbox is open
-        document.body.style.overflow = 'hidden';
-    }, []);
-
-    // Re-enable scroll when lightbox is closed
-    const closeLightbox = useCallback(() => {
-        setLightboxIndex(null);
-        document.body.style.overflow = '';
-    }, []);
+        const newImg = images[newIndex];
+        if (newImg?.documentId) {
+            setLightboxDocumentId(newImg.documentId);
+        }
+    }, [lightboxIndex, images, setLightboxDocumentId]);
 
     const breakpointColumnsObj = {
         default: 3,
@@ -105,13 +153,13 @@ export default function Gallery() {
                     next={() => loadGallery(page + 1)}
                     hasMore={hasMore}
                     loader={
-                            didFirstLoad.current ? (
-                                <div className="m-auto w-10 h-10 flex items-center justify-center my-5">
-                                    <div className="w-10 h-10 rounded-full border-4 border-t-secondary border-white/30 animate-spin"></div>
-                                </div>
-                            ) : (
-                                <GallerySkeleton />
-                            )
+                        didFirstLoad.current ? (
+                            <div className="m-auto w-10 h-10 flex items-center justify-center my-5">
+                                <div className="w-10 h-10 rounded-full border-4 border-t-secondary border-white/30 animate-spin"></div>
+                            </div>
+                        ) : (
+                            <GallerySkeleton />
+                        )
                     }
                     scrollableTarget="scrollableMainContentContainer"
                     endMessage={
@@ -142,11 +190,12 @@ export default function Gallery() {
                     )}
                 </InfiniteScroll>
 
-                {lightboxIndex !== null && (
+                {lightboxIndex !== null && lightboxIndex >= 0 && (
                     <Lightbox
                         images={images}
                         initialIndex={lightboxIndex}
                         onClose={closeLightbox}
+                        onNavigate={navigateLightbox}
                     />
                 )}
             </div>

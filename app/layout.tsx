@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Suspense, lazy } from 'react';
+import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 // Lazy load the ParticleBackground component
 const Background = lazy(() => import("@/components/effects/ParticleBackground"));
@@ -50,7 +51,9 @@ export default function RootLayout({
       <Suspense fallback={<div className="fixed top-0 left-0 w-full h-full -z-10 bg-gradient-to-b from-gray-50 to-gray-200"></div>}>
         <Background />
       </Suspense>
-      {children}
+      <NuqsAdapter>
+        {children}
+      </NuqsAdapter>
       <SpeedInsights />
       </body>
     </html>
