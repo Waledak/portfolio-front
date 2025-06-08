@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Download, X } from 'lucide-react';
@@ -16,22 +17,6 @@ const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose, onNa
     }, [initialIndex, currentIndex]);
 
     const currentImage = images[currentIndex];
-
-    // Close on ESC key press and handle arrow navigation
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                onClose();
-            } else if (e.key === 'ArrowLeft') {
-                handlePrev();
-            } else if (e.key === 'ArrowRight') {
-                handleNext();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []); // Remove currentIndex dependency since we're using onNavigate
 
     const handlePrev = useCallback(() => {
         if (onNavigate) {
@@ -52,6 +37,21 @@ const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose, onNa
             setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
         }
     }, [onNavigate, images.length]);
+
+    // Close on ESC key press and handle arrow navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                onClose();
+            } else if (e.key === 'ArrowLeft') {
+                handlePrev();
+            } else if (e.key === 'ArrowRight') {
+                handleNext();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleNext, handlePrev, onClose]); // Remove currentIndex dependency since we're using onNavigate
 
     // Stop propagation to prevent closing when clicking the image container
     const handleContentClick = (e: React.MouseEvent) => {

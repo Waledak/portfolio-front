@@ -1,28 +1,18 @@
-import Masonry from 'react-masonry-css';
-
-const GallerySkeleton: React.FC = () => {
-    const items = Array(6).fill(0);
+export default function GallerySkeleton() {
     const heights = [200, 250, 300, 350, 280, 320];
 
     return (
-        <Masonry
-            breakpointCols={{
-                default: 3,
-                1100: 2,
-                700: 1,
-            }}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-        >
-            {items.map((_, index) => (
-                <div
-                    key={`skeleton-${index}`}
-                    className="mb-4 relative overflow-hidden bg-gray-200 animate-pulse rounded-lg"
-                    style={{ height: `${heights[index % heights.length]}px` }}
-                />
-            ))}
-        </Masonry>
+        <div className="p-5 my-5 w-full mx-auto bg-base-100 rounded-3xl">
+            {/* Masonry-like skeleton layout */}
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <div
+                        key={`skeleton-${index}`}
+                        className="mb-4 relative overflow-hidden bg-gray-200 animate-pulse rounded-lg break-inside-avoid"
+                        style={{ height: `${heights[index % heights.length]}px` }}
+                    />
+                ))}
+            </div>
+        </div>
     );
-};
-
-export default GallerySkeleton;
+}
