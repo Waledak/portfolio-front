@@ -17,3 +17,7 @@ export interface GalleryProps {
     pageSize?: number;
     initialPage?: number;
 }
+
+export interface LoadErrorProps {
+    loadGallery: () => void;
+}
