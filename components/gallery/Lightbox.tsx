@@ -3,38 +3,60 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Download, X } from 'lucide-react';
 import { LightboxProps } from './types';
 
-const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose }) => {
+const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose, onNavigate }) => {
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
     const [isLoading, setIsLoading] = useState(true);
+
+    // Sync currentIndex with initialIndex when it changes (from URL navigation)
+    useEffect(() => {
+        if (initialIndex !== currentIndex) {
+            setCurrentIndex(initialIndex);
+            setIsLoading(true);
+        }
+    }, [initialIndex, currentIndex]);
+
     const currentImage = images[currentIndex];
 
-    // Close on ESC key press
+    // Close on ESC key press and handle arrow navigation
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') onClose();
-            if (e.key === 'ArrowLeft') handlePrev();
-            if (e.key === 'ArrowRight') handleNext();
+            if (e.key === 'Escape') {
+                onClose();
+            } else if (e.key === 'ArrowLeft') {
+                handlePrev();
+            } else if (e.key === 'ArrowRight') {
+                handleNext();
+            }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // Remove currentIndex dependency since we're using onNavigate
 
     const handlePrev = useCallback(() => {
-        setIsLoading(true);
-        setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    }, [images.length]);
+        if (onNavigate) {
+            onNavigate('prev');
+        } else {
+            // Fallback for backward compatibility
+            setIsLoading(true);
+            setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+        }
+    }, [onNavigate, images.length]);
 
     const handleNext = useCallback(() => {
-        setIsLoading(true);
-        setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, [images.length]);
+        if (onNavigate) {
+            onNavigate('next');
+        } else {
+            // Fallback for backward compatibility
+            setIsLoading(true);
+            setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+        }
+    }, [onNavigate, images.length]);
 
     // Stop propagation to prevent closing when clicking the image container
     const handleContentClick = (e: React.MouseEvent) => {
         e.stopPropagation();
     };
-
 
     // Updated client-side download handler
     const handleDownload = useCallback(async (e: React.MouseEvent) => {
@@ -87,6 +109,11 @@ const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose }) =>
         }
     }, [currentImage]);
 
+    // Handle loading state when image changes
+    useEffect(() => {
+        setIsLoading(true);
+    }, [currentImage?.image?.url]);
+
     return (
         <div
             className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-lg transition-opacity duration-300"
@@ -125,7 +152,7 @@ const Lightbox: React.FC<LightboxProps> = ({ images, initialIndex, onClose }) =>
                 </button>
 
                 <div
-                    className="relative max-w-[90dvw]  h-full flex items-center justify-center p-4"
+                    className="relative max-w-[90dvw] h-full flex items-center justify-center p-4"
                     onClick={handleContentClick}
                 >
                     {isLoading && (

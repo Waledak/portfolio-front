@@ -10,6 +10,7 @@ export interface LightboxProps {
     images: GalleryItem[];
     initialIndex: number;
     onClose: () => void;
+    onNavigate?: (direction: 'next' | 'prev') => void;
 }
 
 export interface GalleryProps {
