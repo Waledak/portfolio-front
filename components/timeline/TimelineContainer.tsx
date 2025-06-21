@@ -6,6 +6,7 @@ import {TimelineBadge} from "@/types/strapi.type";
 import Image from "next/image";
 import Timeline from "@/components/timeline/timelineComponent/timeline";
 import TimelineElement from "@/components/timeline/timelineComponent/timelineElement";
+import {TimelineElementContent} from "@/components/timeline/index";
 
 const TimelineContainer = ({timelineItems}: TimelineContainerProps) => {
     const format = useFormatter();
@@ -56,24 +57,7 @@ const TimelineContainer = ({timelineItems}: TimelineContainerProps) => {
                             }
                             badge={badge ? badgeComponent(badge) : null}
                         >
-                            <div>
-                                <div className="flex justify-between gap-2 flex-wrap">
-                                    <h2 className="text-3xl">{item.title}</h2>
-                                    <div className="badge badge-outline badge-secondary">{t(`type.${item.type}`)}</div>
-                                </div>
-
-                                <h3 className="text-lg">{item.subtitle}</h3>
-                                <p className="text-justify my-3">{item.description}</p>
-                                <div className="flex my-2">
-                                    {
-                                        item.technologies.map((technologie) => (
-                                            <div className="badge badge-secondary"
-                                                 key={technologie.documentId}>{technologie.name}</div>
-                                        ))
-                                    }
-                                </div>
-                                <small className="flex justify-end italic">{item.location}</small>
-                            </div>
+                            <TimelineElementContent description={item.description} location={item.location} subtitle={item.subtitle} title={item.title} type={item.type} technologies={item.technologies} />
                         </TimelineElement>
                     )
                 })
