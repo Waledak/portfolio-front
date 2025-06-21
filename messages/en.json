@@ -18,5 +18,15 @@
   },
   "Project": {
     "title": "Projects"
+  },
+  "Journey": {
+    "title": "My journey",
+    "today": "Today",
+    "type": {
+      "education": "Education",
+      "certification": "Certification",
+      "experience": "Work experience",
+      "freelance": "Freelance"
+    }
   }
 }

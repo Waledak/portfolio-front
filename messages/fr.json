@@ -18,5 +18,15 @@
   },
   "Project": {
     "title": "Projets"
+  },
+  "Journey": {
+    "title": "Mon parcours",
+    "today": "Aujourd'hui",
+    "type": {
+      "education": "Formation",
+      "certification": "Certification",
+      "experience": "Expérience professionel",
+      "freelance": "Freelance"
+    }
   }
 }

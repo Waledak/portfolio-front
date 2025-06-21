@@ -1,0 +1,26 @@
+.vertical-timeline {
+    position: relative;
+    margin: 1rem;
+    padding: 1rem 0;
+    min-height: 50px;
+}
+.vertical-timeline * {
+    box-sizing: border-box;
+}
+.vertical-timeline:before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 100%;
+    left: 18px;
+    border-radius: 4px;
+    transition: left 0.5s ease;
+    background-color: var(--color-primary);
+}
+@media only screen and (min-width: 1170px) {
+    .vertical-timeline:before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
