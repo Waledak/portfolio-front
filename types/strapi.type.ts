@@ -141,3 +141,49 @@ export interface HomePage extends StrapiTimestamps {
         file: StrapiMedia
     }[]
 }
+interface DynamicComponent {
+    __component: StrapiComponent;
+    id: number;
+}
+
+export interface DZMoleculeImage extends DynamicComponent{
+    image: StrapiMedia;
+}
+export interface DZMoleculeLucideIcon extends DynamicComponent {
+    name: string;
+}
+
+export interface Technology extends StrapiEntity, StrapiTimestamps {
+    name: string
+    logo: StrapiMedia
+    category: 'frontend' | 'backend' | 'database' | 'devops' | 'cloud' | 'design'
+    level: 'beginner' | 'intermediate' | 'advanced' | 'expert'
+}
+
+export type TimelineType = 'experience' | 'education' | 'certification' | 'freelance'
+
+export type TimelineBadge = (DZMoleculeImage | DZMoleculeLucideIcon)
+
+export interface TimelineItem extends StrapiEntity, StrapiTimestamps {
+    title: string                      // e.g. "Frontend Developer"
+    subtitle: string                  // e.g. "Google" or "Université de Paris"
+    location: string                  // e.g. "Paris, France"
+    description: string               // HTML or Markdown (depends on how Strapi rich text is returned)
+    startDate: string                 // ISO date string
+    endDate: string | null            // null if still ongoing
+    type: TimelineType                // 'experience', 'education', etc.
+    badge: TimelineBadge[]
+    technologies: Technology[]        // optional linked techs
+}
+
+export interface TimelineResponse {
+    data: TimelineItem[]
+    meta: {
+        pagination: Pagination
+    }
+}
+
+export enum StrapiComponent {
+    lucideIcon = 'molecule.lucidIcon',
+    image = 'molecule.image',
+}

@@ -1,4 +1,4 @@
-import {GalleryResponse, HomePage, ProjectResponse} from "@/types/strapi.type";
+import {GalleryResponse, HomePage, ProjectResponse, TimelineResponse} from "@/types/strapi.type";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
@@ -66,8 +66,7 @@ async function fetchApi<T>(
             );
         }
 
-        const data = await res.json();
-        return data;
+        return await res.json();
     } catch (error) {
         if (error instanceof ApiError) {
             throw error;
@@ -127,6 +126,27 @@ export async function fetchGallery(
             'sort': 'rank',
             'pagination[page]': page,
             'pagination[pageSize]': pageSize
+        }
+    });
+}
+
+/**
+ * Fetch timeline-item data
+ * @param locale
+ * @param options - Cache and revalidation options
+ * @returns Promise with TimelineItemResponse data
+ */
+export async function fetchTimelineItem(
+    locale = 'fr',
+    options: Omit<ApiRequestOptions, 'params'> = {}
+): Promise<TimelineResponse> {
+    return await fetchApi<TimelineResponse>('timeline-items', {
+        ...options,
+        params: {
+            'populate[technologies][populate]': '*',
+            'populate[badge][populate]': '*',
+            locale,
+            'sort': 'startDate:Desc',
         }
     });
 }

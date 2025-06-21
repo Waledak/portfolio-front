@@ -27,6 +27,7 @@ export default function Navbar({ locale }: NavbarProps) {
     const HomeIcon = LucideIcons.HomeIcon;
     const GalleryIcon = LucideIcons.BookImageIcon;
     const ProjectIcon = LucideIcons.LayersIcon;
+    const RouteIcon = LucideIcons.RouteIcon;
 
     // Helper function to determine if a link is active
     const isActive = (href: string) => {
@@ -36,6 +37,7 @@ export default function Navbar({ locale }: NavbarProps) {
     // Define the links
     const links: NavLink[] = [
         { href: `/${locale}`, icon: <HomeIcon className="w-6 h-6 " />, label: 'Home' },
+        { href: `/${locale}/journey`, icon: <RouteIcon className="w-6 h-6 " />, label: 'My journey' },
         { href: `/${locale}/projects`, icon: <ProjectIcon className="w-6 h-6 " />, label: 'Projects' },
         { href: `/${locale}/gallery`, icon: <GalleryIcon className="w-6 h-6 " />, label: 'Gallery' },
     ];
