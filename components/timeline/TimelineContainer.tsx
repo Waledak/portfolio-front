@@ -57,7 +57,7 @@ const TimelineContainer = ({timelineItems}: TimelineContainerProps) => {
                             }
                             badge={badge ? badgeComponent(badge) : null}
                         >
-                            <TimelineElementContent description={item.description} location={item.location} subtitle={item.subtitle} title={item.title} type={item.type} technologies={item.technologies} />
+                            <TimelineElementContent description={item.description} location={item.location} subtitle={item.subtitle} title={item.title} type={t(`type.${item.type}`)} technologies={item.technologies} />
                         </TimelineElement>
                     )
                 })
