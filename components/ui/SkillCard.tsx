@@ -16,7 +16,7 @@ export default function SkillCard({ skill }: SkillCardProps) {
   
   return (
     <article
-      className="px-4 py-2 bg-neutral-200/30 text-sm rounded-3xl w-full min-h-36 flex flex-col"
+      className="px-4 py-2 bg-white shadow-sm text-sm rounded-3xl w-full min-h-36 flex flex-col"
     >
       <Icon className="w-6 h-6 mb-1 text-primary" />
       <h3 className="text-xl mb-3 border-b-[1px] pb-2 border-neutral text-black">{skill.name}</h3>

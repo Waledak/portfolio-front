@@ -10,7 +10,7 @@ export default function ProjectCard({
                                         project,
                                     }: ProjectCardProps) {
     return (
-        <div className="card bg-base-100 w-full shadow-sm mx-auto">
+        <div className="card bg-white w-full shadow-sm mx-auto">
             <figure className="relative w-full h-36">
                 <Image
                     fill

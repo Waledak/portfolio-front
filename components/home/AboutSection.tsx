@@ -18,7 +18,7 @@ export default function AboutSection({ title, content, photos }: AboutSectionPro
         <Section title={title}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {/* Markdown description */}
-                <article className="px-4 py-2 bg-neutral-200/30 rounded-3xl text-black text-justify row-span-2 md:col-span-2 prose prose-neutral">
+                <article className="px-4 py-2 bg-white shadow-sm rounded-3xl text-black text-justify row-span-2 md:col-span-2 prose prose-neutral">
                     <ReactMarkdown>{content}</ReactMarkdown>
                 </article>
 

@@ -14,8 +14,8 @@ interface SectionProps {
  */
 export default function Section({ title, children, className = '' }: SectionProps) {
   return (
-    <section className={`col-span-3 mt-9 bg-white/30 backdrop-blur-sm rounded-3xl p-6 ${className}`}>
-      <h2 className="bg-neutral-200/30 w-fit p-4 backdrop-blur-sm rounded-3xl text-3xl text-black">
+    <section className={`bg-base-100 col-span-3 mt-9 rounded-3xl p-6 ${className}`}>
+      <h2 className="title-background-color w-fit p-4 rounded-3xl text-3xl text-black">
         {title}
       </h2>
       <div className="mt-3">
